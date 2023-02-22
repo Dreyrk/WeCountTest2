@@ -1,0 +1,25 @@
+{
+  "name": "2ndtest",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "server": "nodemon ./tennis-back/index.js",
+    "client": "cd ./tennis-front && npm start",
+    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dreyrk/WeCount-test-2.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Dreyrk/WeCount-test-2/issues"
+  },
+  "homepage": "https://github.com/Dreyrk/WeCount-test-2#readme",
+  "dependencies": {
+    "concurrently": "^7.6.0"
+  }
+}
