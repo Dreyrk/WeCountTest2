@@ -1,6 +1,7 @@
 import React from "react";
-import { BrowserRouter } from "react-router-dom";
 import "./App.css";
+import { BrowserRouter } from "react-router-dom";
+import { CurrentGameProvider } from "./contexts/CurrentGameContext";
 import Header from "./components/Header";
 import Routing from "./components/Routing";
 
@@ -9,7 +10,9 @@ function App() {
     <div className="App">
       <Header />
       <BrowserRouter>
-        <Routing />
+        <CurrentGameProvider>
+          <Routing />
+        </CurrentGameProvider>
       </BrowserRouter>
     </div>
   );

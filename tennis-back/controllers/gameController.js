@@ -25,10 +25,15 @@ const gameController = {
     }
   },
   postGame: async (req, res) => {
+    const { players, finalScore, score } = req.body;
     try {
-      const games = await Game.find({});
+      const game = await Game.create({
+        players,
+        finalScore,
+        score,
+      });
 
-      res.status(200).send({ results: games, total: games.length });
+      res.status(201).send(game);
     } catch (e) {
       console.error(e);
       res.sendStatus(500);

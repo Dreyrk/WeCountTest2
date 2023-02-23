@@ -14,7 +14,7 @@ router.get("/api/games", getGames);
 router.get("/api/games/:id", getGameById);
 
 //POST
-router.post("api/games", postGame);
+router.post("/api/games", postGame);
 
 //UPDATE
 router.put("/api/games", updateGame);

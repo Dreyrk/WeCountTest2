@@ -1,55 +1,43 @@
-import React from "react";
-import ScoreCard from "../components/ScoreCard";
-
-const game = [
-  {
-    finalScore: "3 - 0",
-    score: "(45 - 0, 45 - 15, 15 - 45)",
-  },
-  {
-    finalScore: "3 - 0",
-    score: "(45 - 0, 45 - 15, 15 - 45)",
-  },
-  {
-    finalScore: "3 - 0",
-    score: "(45 - 0, 45 - 15, 15 - 45)",
-  },
-  {
-    finalScore: "3 - 0",
-    score: "(45 - 0, 45 - 15, 15 - 45)",
-  },
-];
+import React, { useState, useEffect } from "react";
+import GameList from "../components/GameList";
+import HeaderList from "../components/HeaderList";
+import { useCurrentGameContext } from "../contexts/CurrentGameContext";
 
 function GamePage() {
+  const { currentGame, setCurrentGame } = useCurrentGameContext();
+  const [games, setGames] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:5000/api/games")
+      .then((res) => res.json())
+      .then((data) => setGames(data.results))
+      .catch((e) => console.error(e));
+  });
+
+
+  const playGame = () => {
+    
+  }
+
+
   return (
     <div className="h-screen flex justify-center items-center">
-      <div className="h-[80%] w-[80%] bg-yellow rounded-xl shadow-md overflow-auto">
+      <div className="h-[80%] w-[80%] bg-yellow rounded-xl shadow-md">
         <div className="h-[40%] flex flex-col justify-center items-center gap-6">
-          <h1 className="pb-10 font-bold text-4xl">Match !</h1>
+          <h1 className="p-6 border-2 bg-orange font-bold text-4xl rounded-md shadow-lg text-white">
+            Match !
+          </h1>
           <button
             className="h-12 w-40 mt-10 font-bold text-2xl text-white bg-red rounded-3xl"
-            type="button">
+            type="button"
+            onClick={playGame}>
             Play
           </button>
         </div>
         <div className="flex justify-center items-center">
           <div className="w-3/5">
-            <div className="border border-t-2 border-x-2">
-              <h1>Game Details</h1>
-            </div>
-            <div className="border flex flex-wrap justify-between">
-              <h2 className="w-1/2 border">Player 1</h2>
-              <h2 className="w-1/2 border">Player 2</h2>
-              <h5 className="w-1/2 border-x">15</h5>
-              <h5 className="w-1/2 border-x">0</h5>
-            </div>
-            <div className="w-full h-1/2 border">
-              <ul className="">
-                {game.map((el) => (
-                  <ScoreCard game={el} />
-                ))}
-              </ul>
-            </div>
+            <HeaderList currentGame={currentGame} />
+            <GameList games={games} />
           </div>
         </div>
       </div>
