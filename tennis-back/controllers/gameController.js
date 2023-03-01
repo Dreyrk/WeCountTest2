@@ -59,6 +59,16 @@ const gameController = {
       res.sendStatus(500);
     }
   },
+  resetGame: async (req, res) => {
+    try {
+      await Game.deleteMany({});
+
+      res.status(204).send("deleted");
+    } catch (e) {
+      res.sendStatus(500);
+      console.error(e);
+    }
+  },
 };
 
 export default gameController;

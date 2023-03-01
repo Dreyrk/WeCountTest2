@@ -5,10 +5,36 @@ const CurrentGameContext = createContext();
 export default CurrentGameContext;
 
 export function CurrentGameProvider({ children }) {
-  const [currentGame, setCurrentGame] = useState([
-    { name: "Player 1", currentScore: 0 },
-    { name: "Player 2", currentScore: 0 },
-  ]);
+  const [currentGame, setCurrentGame] = useState({
+    player1: {
+      name: "Player 1",
+      level: 0,
+      currentScore: 0,
+      currentSet: 0,
+      setWin: {
+        set1: 0,
+        set2: 0,
+        set3: 0,
+      },
+      gameWin: false,
+    },
+    player2: {
+      name: "Player 2",
+      currentScore: 0,
+      currentSet: 0,
+      level: 0,
+      setWin: {
+        set1: 0,
+        set2: 0,
+        set3: 0,
+      },
+      gameWin: false,
+    },
+    config: {
+      avantage: false,
+      ptsList: [],
+    },
+  });
 
   const game = { currentGame, setCurrentGame };
 
