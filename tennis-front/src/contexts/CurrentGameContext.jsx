@@ -11,24 +11,24 @@ export function CurrentGameProvider({ children }) {
       level: 0,
       currentScore: 0,
       currentSet: 0,
-      setWin: {
+      setsWin: {
         set1: 0,
         set2: 0,
         set3: 0,
       },
-      gameWin: false,
+      matchWin: false,
     },
     player2: {
       name: "Player 2",
       currentScore: 0,
       currentSet: 0,
       level: 0,
-      setWin: {
+      setsWin: {
         set1: 0,
         set2: 0,
         set3: 0,
       },
-      gameWin: false,
+      matchWin: false,
     },
     config: {
       avantage: false,

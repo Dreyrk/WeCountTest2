@@ -1,76 +1,58 @@
-console.clear();
-
-function Player(name) {
-  this.name = name;
-  this.pointsWon = 0;
-  this.gamesWon = 0;
-}
-
-Player.prototype.setPointsWon = function (points) {
-  this.pointsWon = points;
+// Définition des variables
+let joueur1 = {
+  nom: "Joueur 1",
+  score: 0,
+  avantage: false,
 };
-
-Player.prototype.getPointsWon = function () {
-  return this.pointsWon;
+let joueur2 = {
+  nom: "Joueur 2",
+  score: 0,
+  avantage: false,
 };
+let score = ["0", "15", "30", "40"];
+let tour = 1;
 
-function Match(players) {
-  this.players = players;
-  this.currentGame = null;
-}
-
-Match.prototype.start = function () {
-  this.currentGame = new Game(this.players);
-  return this.currentGame;
-};
-
-Match.prototype.getCurrentGame = function () {
-  return this.currentGame;
-};
-
-function Game(players) {
-  this.players = players;
-}
-
-Game.prototype.wonPoint = function (player) {
-  var p1, p2;
-
-  this.players.forEach(function (p) {
-    if (p === player) {
-      p1 = p;
-    } else {
-      p2 = p;
-    }
-  });
-
-  if (p1.pointsWon == 40 && p2.pointsWon != 40) {
-    console.log("game");
-  }
-
-  if (player.pointsWon == 0) {
-    player.pointsWon = 15;
-  } else if (player.pointsWon == 15) {
-    player.pointsWon = 30;
+// Fonction pour obtenir le score d'un joueur
+function obtenirScore(joueur) {
+  if (joueur.score >= 3 && joueur.score === joueur2.score) {
+    joueur.avantage = true;
+    return "Avantage " + joueur.nom;
+  } else if (joueur.avantage && joueur.score > joueur2.score + 1) {
+    joueur.avantage = false;
+    return "Jeu " + joueur.nom;
+  } else if (joueur.score >= 4 && joueur.score === joueur2.score + 1) {
+    return "Jeu " + joueur.nom;
   } else {
-    player.pointsWon = 40;
+    return score[joueur.score];
   }
+}
 
-  console.log(player.name, ":", player.pointsWon);
-
-  if (p1.pointsWon == 40 && p2.pointsWon == 40) {
-    console.log("deuce");
+// Fonction pour jouer un point
+function jouerPoint() {
+  if (Math.random() < 0.5) {
+    joueur1.score++;
+  } else {
+    joueur2.score++;
   }
-};
+}
 
-var dan = new Player("Dan");
-var bob = new Player("Bob");
+// Boucle principale du jeu
+while (joueur1.score < 4 && joueur2.score < 4) {
+  jouerPoint();
+  console.log(
+    "Tour " +
+      tour +
+      " : " +
+      obtenirScore(joueur1) +
+      " - " +
+      obtenirScore(joueur2)
+  );
+  tour++;
+}
 
-var match = new Match([dan, bob]);
-match.start();
-const random = Math.floor(Math.random() * 2);
-match.getCurrentGame().wonPoint(random ? dan : bob);
-match.getCurrentGame().wonPoint(random ? dan : bob);
-match.getCurrentGame().wonPoint(random ? dan : bob);
-match.getCurrentGame().wonPoint(random ? dan : bob);
-match.getCurrentGame().wonPoint(random ? dan : bob);
-match.getCurrentGame().wonPoint(random ? dan : bob);
+// Affichage du gagnant
+if (joueur1.score > joueur2.score) {
+  console.log(joueur1.nom + " remporte le match !");
+} else {
+  console.log(joueur2.nom + " remporte le match !");
+}

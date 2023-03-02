@@ -14,7 +14,7 @@ function HeaderList() {
         return "30";
       case 3:
         return "40";
-      case 4:
+      case score > 4:
         return "AV";
       default:
         break;
@@ -35,18 +35,22 @@ function HeaderList() {
       <tbody>
         <tr className="border">
           <th className="border">{currentGame.player1.name}</th>
-          <th>{currentGame.player1.setWin.set1 || "0"}</th>
-          <th>{currentGame.player1.setWin.set2 || "0"}</th>
-          <th>{currentGame.player1.setWin.set3 || "0"}</th>
+          <th>
+            {currentGame.player1.setsWin.set1 || currentGame.player1.currentSet}
+          </th>
+          <th>{currentGame.player1.setsWin.set2 || "0"}</th>
+          <th>{currentGame.player1.setsWin.set3 || "0"}</th>
           <th className="border">
             {getScoreInText(currentGame.player1.currentScore)}
           </th>
         </tr>
         <tr>
           <th className="border">{currentGame.player2.name}</th>
-          <th>{currentGame.player2.setWin.set1 || "0"}</th>
-          <th>{currentGame.player2.setWin.set2 || "0"}</th>
-          <th>{currentGame.player2.setWin.set3 || "0"}</th>
+          <th>
+            {currentGame.player2.setsWin.set1 || currentGame.player2.currentSet}
+          </th>
+          <th>{currentGame.player2.setsWin.set2 || "0"}</th>
+          <th>{currentGame.player2.setsWin.set3 || "0"}</th>
           <th className="border">
             {getScoreInText(currentGame.player2.currentScore)}
           </th>
