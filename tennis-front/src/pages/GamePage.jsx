@@ -10,7 +10,6 @@ function GamePage() {
   const [p2CurrentSet, setP2CurrentSet] = useState(0);
 
   useEffect(() => console.log(currentGame), [currentGame]);
-  //--------------------------------------------------------------
 
   const simulatePts = (player1, player2, random) => {
     if (random === 1) {
@@ -19,13 +18,15 @@ function GamePage() {
     return player1;
   };
 
+  //--------------------------------------------------------------
+
   const PlayGame = () => {
     const random = Math.floor(Math.random() * 2);
     // Set the current player
     const ptsWinner = simulatePts(player1, player2, random);
 
-    config.ptsList.push(random);
     ptsWinner.currentScore++;
+    config.ptsList.push(random);
 
     if (
       ptsWinner.currentScore >= 4 &&
@@ -44,6 +45,7 @@ function GamePage() {
           setP2CurrentSet(player2.currentSet);
           setCurrentGame({
             ...currentGame,
+            config: { ...currentGame.config, ptsList: [] },
             player1: {
               ...currentGame.player1,
               setsWin: {
@@ -54,6 +56,7 @@ function GamePage() {
           });
           setCurrentGame({
             ...currentGame,
+            config: { ...currentGame.config, ptsList: [] },
             player2: {
               ...currentGame.player2,
               setsWin: {
@@ -69,6 +72,7 @@ function GamePage() {
           setP2CurrentSet(player2.currentSet);
           setCurrentGame({
             ...currentGame,
+            config: { ...currentGame.config, ptsList: [] },
             player1: {
               ...currentGame.player1,
               setsWin: {
@@ -79,6 +83,7 @@ function GamePage() {
           });
           setCurrentGame({
             ...currentGame,
+            config: { ...currentGame.config, ptsList: [] },
             player2: {
               ...currentGame.player2,
               setsWin: {
@@ -94,6 +99,7 @@ function GamePage() {
           setP2CurrentSet(player2.currentSet);
           setCurrentGame({
             ...currentGame,
+            config: { ...currentGame.config, ptsList: [] },
             player1: {
               ...currentGame.player1,
               setsWin: {
@@ -104,6 +110,7 @@ function GamePage() {
           });
           setCurrentGame({
             ...currentGame,
+            config: { ...currentGame.config, ptsList: [] },
             player2: {
               ...currentGame.player2,
               setsWin: {
@@ -128,16 +135,6 @@ function GamePage() {
   };
 
   //------------------------------------------------------------
-  const ChangeRandomInPlayer = (ptsWinner) => {
-    switch (ptsWinner) {
-      case 0:
-        return player1.name;
-      case 1:
-        return player2.name;
-      default:
-        break;
-    }
-  };
 
   const resetGame = () => {
     setCurrentGame({
@@ -170,6 +167,17 @@ function GamePage() {
         ptsList: [],
       },
     });
+  };
+
+  const ChangeRandomInPlayer = (ptsWinner) => {
+    switch (ptsWinner) {
+      case 0:
+        return player1.name;
+      case 1:
+        return player2.name;
+      default:
+        break;
+    }
   };
 
   return (
