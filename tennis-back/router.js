@@ -1,7 +1,8 @@
 import express from "express";
 import gameController from "./controllers/gameController.js";
 
-const { getGames, getGameById, postGame, updateGame } = gameController;
+const { getGames, getGameById, postGame, updateGame, resetGame } =
+  gameController;
 
 const router = express.Router();
 
@@ -20,5 +21,7 @@ router.post("/api/games", postGame);
 router.put("/api/games", updateGame);
 
 //DELETE
+
+router.delete("api/games/reset", resetGame);
 
 export default router;

@@ -1,8 +1,10 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useCurrentGameContext } from "../contexts/CurrentGameContext";
 
 function Home() {
   const navigate = useNavigate();
+  const { currentGame, setCurrentGame } = useCurrentGameContext();
 
   return (
     <div className="h-screen w-full flex justify-center items-center">
@@ -13,19 +15,67 @@ function Home() {
           </div>
         </div>
         <div className="h-1/3 pt-6 flex justify-center gap-44 mt-2">
-          <label
-            className="flex flex-col items-start text-sm font-medium"
-            htmlFor="name">
-            Name:
-            <input type="text" />
-          </label>
+          <div className="h-full">
+            <label
+              className="flex flex-col items-start text-sm font-medium mb-2"
+              htmlFor="name">
+              Name:
+              <input
+                type="text"
+                onChange={(e) => {
+                  setCurrentGame({
+                    ...currentGame,
+                    player1: { ...currentGame.player1, name: e.target.value },
+                  });
+                }}
+              />
+            </label>
+            <label
+              className="flex flex-col items-start text-sm font-medium"
+              htmlFor="name">
+              Level:
+              <input
+                type="text"
+                onChange={(e) => {
+                  setCurrentGame({
+                    ...currentGame,
+                    player1: { ...currentGame.player1, level: e.target.value },
+                  });
+                }}
+              />
+            </label>
+          </div>
           <h2 className="pt-5 font-bold text-2xl">VS</h2>
-          <label
-            className=" flex flex-col items-start text-sm font-medium"
-            htmlFor="name">
-            Name:
-            <input type="text" />
-          </label>
+          <div className="h-full">
+            <label
+              className=" flex flex-col items-start text-sm font-medium mb-2"
+              htmlFor="name">
+              Name:
+              <input
+                type="text"
+                onChange={(e) => {
+                  setCurrentGame({
+                    ...currentGame,
+                    player2: { ...currentGame.player2, name: e.target.value },
+                  });
+                }}
+              />
+            </label>
+            <label
+              className=" flex flex-col items-start text-sm font-medium"
+              htmlFor="name">
+              Level:
+              <input
+                type="text"
+                onChange={(e) => {
+                  setCurrentGame({
+                    ...currentGame,
+                    player2: { ...currentGame.player2, level: e.target.value },
+                  });
+                }}
+              />
+            </label>
+          </div>
         </div>
         <div className="h-1/3 flex justify-center items-center">
           <button
