@@ -31,7 +31,7 @@ export function CurrentGameProvider({ children }) {
       matchWin: false,
     },
     config: {
-      avantage: false,
+      avantage: "",
       ptsList: [],
     },
   });
