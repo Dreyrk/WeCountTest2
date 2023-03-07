@@ -81,8 +81,8 @@ function GamePage() {
         }
         //if set Win the set 2 = current set
         else if (
-          ptsWinner.setsWins.set1 > 1 &&
-          player1.setsWin.set2 === 0 &&
+          ptsWinner.setsWin.set1 > 1 ||
+          player1.setsWin.set2 === 0 ||
           player2.setsWin.set2 === 0
         ) {
           setCurrentGame({
@@ -108,9 +108,9 @@ function GamePage() {
         }
         //if set Win the set 3 = current set
         else if (
-          ptsWinner.setsWins.set1 > 1 &&
-          player1.setsWin.set3 === 0 &&
-          player2.setsWin.set3
+          ptsWinner.setsWins.set2 > 1 ||
+          player1.setsWin.set3 === 0 ||
+          player2.setsWin.set3 === 0
         ) {
           setCurrentGame({
             ...currentGame,
