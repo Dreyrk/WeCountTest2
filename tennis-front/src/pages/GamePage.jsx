@@ -138,6 +138,24 @@ function GamePage() {
           console.log(ptsWinner);
           ptsWinner.matchWin = true;
           setWinner(`${ptsWinner.name}`);
+
+          const body = {
+            players: [player1, player2],
+            winner: ptsWinner.name,
+            sets: [player1.setWins, player2.setWins],
+          };
+
+          const myHeaders = {
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            method: "POST",
+            body: JSON.stringify(body),
+          };
+          fetch("http://localhost:5000/api/game", myHeaders)
+            .then((res) => console.log(res))
+            .catch((e) => console.error(e));
         }
       }
     }

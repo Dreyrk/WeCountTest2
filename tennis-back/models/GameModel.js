@@ -2,8 +2,8 @@ import mongoose from "mongoose";
 
 export const GameSchema = mongoose.Schema({
   players: Array,
-  finalScore: String,
-  score: Array,
+  winner: String,
+  sets: Array,
 });
 
 const Game = mongoose.model("Game", GameSchema);
