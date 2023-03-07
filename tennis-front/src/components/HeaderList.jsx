@@ -14,8 +14,10 @@ function HeaderList() {
         return "30";
       case 3:
         return "40";
-      case score > 4:
+      case 4:
         return "AV";
+      case score >= 5:
+        return "Win";
       default:
         break;
     }

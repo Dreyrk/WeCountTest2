@@ -5,60 +5,73 @@ import { useCurrentGameContext } from "../contexts/CurrentGameContext";
 function GamePage() {
   const { currentGame, setCurrentGame } = useCurrentGameContext();
   const { player1, player2, config } = currentGame;
+  const [opponentPlayer, setOpponentPlayer] = useState({});
   const [currentPlayer, setCurrentPlayer] = useState(player1);
+  const [winner, setWinner] = useState("");
   const [p1CurrentSet, setP1CurrentSet] = useState(0);
   const [p2CurrentSet, setP2CurrentSet] = useState(0);
 
   useEffect(() => console.log(currentGame), [currentGame]);
 
-  const simulatePts = (player1, player2, random) => {
+  const simulatePts = (player1, player2, random, setOpponent) => {
     if (random === 1) {
+      setOpponent(player1);
       return player2;
+    } else {
+      setOpponent(player2);
+      return player1;
     }
-    return player1;
   };
 
   //--------------------------------------------------------------
 
   const PlayGame = () => {
     const random = Math.floor(Math.random() * 2);
+    config.ptsList.push(random);
     // Set the current player
-    const ptsWinner = simulatePts(player1, player2, random);
+    const ptsWinner = simulatePts(player1, player2, random, setOpponentPlayer);
 
     ptsWinner.currentScore++;
-    config.ptsList.push(random);
 
-    if (
-      ptsWinner.currentScore >= 4 &&
-      ptsWinner.currentScore - currentPlayer.currentScore >= 2
-    ) {
+    const scoreGap = Math.abs(player1.currentScore - player2.currentScore);
+
+    if (player1.currentScore >= 4 && scoreGap === 1) {
+      console.log("Joueur 1 a l'avantage");
+    } else if (player2.currentScore >= 4 && scoreGap === 1) {
+      console.log("Joueur 2 a l'avantage");
+    } else {
+      console.log("Pas d'avantage");
+    }
+
+    const setGap = Math.abs(player1.currentSet - player2.currentSet);
+
+    //if ptsWinner has won increment currentSet
+    if (ptsWinner.currentScore >= 4 && scoreGap >= 2) {
       ptsWinner.currentSet++;
-      player1.currentScore = 0;
-      player2.currentScore = 0;
-      if (
-        ptsWinner.currentSet >= 6 &&
-        ptsWinner.currentSet - currentPlayer.currentSet >= 2
-      ) {
+      setCurrentGame({
+        ...currentGame,
+        player1: { ...currentGame.player1, currentScore: 0 },
+        player2: { ...currentGame.player2, currentScore: 0 },
+      });
+      setP1CurrentSet(player1.currentSet);
+      setP2CurrentSet(player2.currentSet);
+      if (ptsWinner.currentSet >= 6 && setGap >= 2) {
         //if set Win the set 1 = current set
+
         if (player1.setsWin.set1 === 0 || player2.setsWin.set1 === 0) {
-          setP1CurrentSet(player1.currentSet);
-          setP2CurrentSet(player2.currentSet);
           setCurrentGame({
-            ...currentGame,
             config: { ...currentGame.config, ptsList: [] },
             player1: {
               ...currentGame.player1,
+              currentSet: 0,
               setsWin: {
                 ...currentGame.player1.setsWin,
                 set1: p1CurrentSet,
               },
             },
-          });
-          setCurrentGame({
-            ...currentGame,
-            config: { ...currentGame.config, ptsList: [] },
             player2: {
               ...currentGame.player2,
+              currentSet: 0,
               setsWin: {
                 ...currentGame.player2.setsWin,
                 set1: p2CurrentSet,
@@ -67,25 +80,25 @@ function GamePage() {
           });
         }
         //if set Win the set 2 = current set
-        if (ptsWinner.setsWin.set1 >= 6 || player2.setsWin.set1 >= 6) {
-          setP1CurrentSet(player1.currentSet);
-          setP2CurrentSet(player2.currentSet);
+        else if (
+          ptsWinner.setsWins.set1 > 1 &&
+          player1.setsWin.set2 === 0 &&
+          player2.setsWin.set2 === 0
+        ) {
           setCurrentGame({
             ...currentGame,
             config: { ...currentGame.config, ptsList: [] },
             player1: {
               ...currentGame.player1,
+              currentSet: 0,
               setsWin: {
                 ...currentGame.player1.setsWin,
                 set2: p1CurrentSet,
               },
             },
-          });
-          setCurrentGame({
-            ...currentGame,
-            config: { ...currentGame.config, ptsList: [] },
             player2: {
               ...currentGame.player2,
+              currentSet: 0,
               setsWin: {
                 ...currentGame.player2.setsWin,
                 set2: p2CurrentSet,
@@ -94,25 +107,25 @@ function GamePage() {
           });
         }
         //if set Win the set 3 = current set
-        if (player1.setsWin.set2 >= 6 || player2.setsWin.set2 >= 6) {
-          setP1CurrentSet(player1.currentSet);
-          setP2CurrentSet(player2.currentSet);
+        else if (
+          ptsWinner.setsWins.set1 > 1 &&
+          player1.setsWin.set3 === 0 &&
+          player2.setsWin.set3
+        ) {
           setCurrentGame({
             ...currentGame,
             config: { ...currentGame.config, ptsList: [] },
             player1: {
               ...currentGame.player1,
+              currentSet: 0,
               setsWin: {
                 ...currentGame.player1.setsWin,
                 set3: p1CurrentSet,
               },
             },
-          });
-          setCurrentGame({
-            ...currentGame,
-            config: { ...currentGame.config, ptsList: [] },
             player2: {
               ...currentGame.player2,
+              currentSet: 0,
               setsWin: {
                 ...currentGame.player2.setsWin,
                 set3: p2CurrentSet,
@@ -120,18 +133,16 @@ function GamePage() {
             },
           });
         }
-        if (
-          ptsWinner.setsWin.set1 +
-            ptsWinner.setsWin.set2 +
-            ptsWinner.setsWin.set3 >=
-          2
-        ) {
+        if (ptsWinner.setsWin.set3 >= 6 && setGap >= 2) {
           // Check if the point winner has won the match
+          console.log(ptsWinner);
           ptsWinner.matchWin = true;
+          setWinner(`${ptsWinner.name}`);
         }
       }
     }
-    setCurrentPlayer(ptsWinner === player1 ? player2 : player1);
+    setCurrentPlayer(currentPlayer === player1 ? player2 : player1);
+    console.log(currentGame);
   };
 
   //------------------------------------------------------------
@@ -139,8 +150,7 @@ function GamePage() {
   const resetGame = () => {
     setCurrentGame({
       player1: {
-        name: "Player 1",
-        level: 0,
+        ...currentGame.player1,
         currentScore: 0,
         currentSet: 0,
         setsWin: {
@@ -151,8 +161,7 @@ function GamePage() {
         matchWin: false,
       },
       player2: {
-        name: "Player 2",
-        level: 0,
+        ...currentGame.player2,
         currentScore: 0,
         currentSet: 0,
         setsWin: {
@@ -212,11 +221,13 @@ function GamePage() {
             <HeaderList />
             <div className="w-full h-[300px] border overflow-auto">
               <ul className="w-full flex flex-col justify-center">
-                {config.ptsList.map((pts, i) => (
-                  <li key={i} className="font-medium">
-                    Point remporté par {ChangeRandomInPlayer(pts)}
-                  </li>
-                ))}
+                {!player1.matchWin || !player2.matchWin
+                  ? config.ptsList.map((pts, i) => (
+                      <li key={i} className="font-medium">
+                        Point remporté par {ChangeRandomInPlayer(pts)}
+                      </li>
+                    ))
+                  : `${winner} has won the match`}
               </ul>
             </div>
           </div>
